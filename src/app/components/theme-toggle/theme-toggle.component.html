@@ -1,0 +1,25 @@
+<button
+  (click)="this.themeService.toggleTheme()"
+  class="p-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-0 border-0"
+  [style.backgroundColor]="'var(--color-surface)'"
+  [style.color]="'var(--color-text)'"
+  aria-label="Toggle Dark Mode"
+>
+  @if (this.themeService.theme() === 'dark') {
+    <mat-icon
+      class="w-5 h-5 text-yellow-500 transition-transform rotate-0 hover:rotate-90 focus:outline-none focus:ring-0 border-0"
+      [style.backgroundColor]="'var(--color-surface)'"
+      [style.color]="'var(--color-text)'"
+      aria-hidden="true"
+      >light_mode</mat-icon
+    >
+  } @else {
+    <mat-icon
+      class="w-5 h-5 transition-transform hover:-rotate-12"
+      [style.backgroundColor]="'var(--color-surface)'"
+      [style.color]="'var(--color-text)'"
+      aria-hidden="true"
+      >dark_mode</mat-icon
+    >
+  }
+</button>

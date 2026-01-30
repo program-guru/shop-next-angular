@@ -1,0 +1,89 @@
+<header
+  class="flex items-center justify-between px-6 mt-3 py-3 md:py-4 shadow-sm max-w-5xl rounded-full mx-auto w-full bg-surface text-text sticky top-3 z-50"
+>
+  <!-- Logo -->
+  <a [routerLink]="['/']" class="shrink-0">
+    <img
+      [src]="this.themeService.theme() === 'dark' ? 'Logo/logo-dark.png' : 'Logo/logo-light.png'"
+      class="h-8 md:h-10 w-auto"
+      alt="ShopNext Logo"
+      height="40"
+      width="100"
+    />
+  </a>
+
+  <!-- Mobile Navigation Overlay -->
+  <nav
+    id="menu"
+    [class]="
+      'max-md:fixed max-md:top-0 max-md:left-0 max-md:overflow-hidden ' +
+      'items-center justify-center max-md:h-full ' +
+      'transition-[width] duration-300 ' +
+      'bg-surface/95 backdrop-blur-md ' +
+      'flex-col md:flex-row flex gap-8 ' +
+      'text-text text-sm font-normal z-50 ' +
+      (isMenuOpen() ? 'max-md:w-full' : 'max-md:w-0')
+    "
+  >
+    <button
+      id="closeMenu"
+      class="md:hidden absolute top-6 right-6 text-text-muted hover:text-primary transition-colors"
+      (click)="toggleMenu()"
+      aria-label="Close menu"
+    >
+      <mat-icon class="w-6 h-6" aria-hidden="true">close</mat-icon>
+    </button>
+
+    @for (item of links; track item.href) {
+      <a
+        [routerLink]="[item.href]"
+        routerLinkActive="px-3 py-2 rounded-lg bg-primary text-text-inverse font-semibold"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="closeMenu()"
+        class="px-3 py-2 rounded-lg hover:bg-surface-hover transition-colors"
+      >
+        {{ item.name }}
+      </a>
+    }
+  </nav>
+
+  <!-- Right Controls -->
+  <div class="flex items-center space-x-3 md:space-x-4 z-40">
+    <!-- Theme Toggle (embedded directly) -->
+    <button
+      (click)="this.themeService.toggleTheme()"
+      class="p-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-0 border-0"
+      [style.backgroundColor]="'var(--color-surface)'"
+      [style.color]="'var(--color-text)'"
+      aria-label="Toggle Dark Mode"
+    >
+      @if (this.themeService.theme() === 'dark') {
+        <mat-icon
+          class="w-5 h-5 text-yellow-500 transition-transform rotate-0 hover:rotate-90 focus:outline-none focus:ring-0 border-0"
+          [style.backgroundColor]="'var(--color-surface)'"
+          [style.color]="'var(--color-text)'"
+          aria-hidden="true"
+          >light_mode</mat-icon
+        >
+      } @else {
+        <mat-icon
+          class="w-5 h-5 transition-transform hover:-rotate-12"
+          [style.backgroundColor]="'var(--color-surface)'"
+          [style.color]="'var(--color-text)'"
+          aria-hidden="true"
+          >dark_mode</mat-icon
+        >
+      }
+    </button>
+
+    <!-- Mobile Hamburger -->
+    <button
+      id="openMenu"
+      class="md:hidden text-text-muted hover:text-primary transition-colors"
+      (click)="toggleMenu()"
+      aria-label="Open menu"
+    >
+      <mat-icon class="w-6 h-6" aria-hidden="true">menu</mat-icon>
+    </button>
+  </div>
+</header>
