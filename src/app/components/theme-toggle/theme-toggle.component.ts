@@ -4,7 +4,7 @@ import { ThemeService } from '../../core/services/theme.service';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'theme-toggle',
+  selector: 'component-theme-toggle',
   imports: [CommonModule, MatIconModule],
   templateUrl: './theme-toggle.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
