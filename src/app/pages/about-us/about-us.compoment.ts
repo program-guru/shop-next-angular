@@ -3,7 +3,7 @@ import { Information } from '../../components/information/information.component'
 import { Team } from '../../components/team/team.component';
 
 @Component({
-  selector: 'home',
+  selector: 'about-us',
   imports: [Information, Team],
   templateUrl: './about-us.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

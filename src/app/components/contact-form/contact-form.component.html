@@ -1,0 +1,114 @@
+<section class="flex items-center justify-center py-16 px-4">
+  <div class="grid md:grid-cols-2 gap-10 lg:gap-20 max-w-7xl w-full items-center">
+    <div class="p-6 bg-surface border border-border rounded-2xl">
+      <h1 class="text-3xl font-heading font-semibold text-text mb-3">Get in touch</h1>
+
+      <p class="text-sm text-text-muted mb-8 max-w-md">
+        Questions about sizing, orders, or returns? We're here to help.
+      </p>
+
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="mb-5">
+          <label for="name" class="block text-sm text-text-muted mb-2">Name</label>
+          <input
+            #nameInput
+            id="name"
+            type="text"
+            formControlName="name"
+            [class]="
+              'w-full px-3 py-3 border rounded-lg text-sm bg-background outline-none transition-colors ' +
+              (contactForm.controls.name.invalid && contactForm.controls.name.touched
+                ? 'border-danger'
+                : 'border-border focus:border-primary')
+            "
+          />
+          @if (contactForm.controls.name.invalid && contactForm.controls.name.touched) {
+            <p class="mt-1 text-sm text-danger">
+              @if (
+                contactForm.controls.name.hasError('required') ||
+                contactForm.controls.name.hasError('whitespace')
+              ) {
+                Please enter your name.
+              } @else if (contactForm.controls.name.hasError('minlength')) {
+                Name must be at least 2 characters long.
+              }
+            </p>
+          }
+        </div>
+
+        <div class="mb-5">
+          <label for="email" class="block text-sm text-text-muted mb-2">Email address</label>
+          <input
+            #emailInput
+            id="email"
+            type="email"
+            formControlName="email"
+            [class]="
+              'w-full px-3 py-3 border rounded-lg text-sm bg-background outline-none transition-colors ' +
+              (contactForm.controls.email.invalid && contactForm.controls.email.touched
+                ? 'border-danger'
+                : 'border-border focus:border-primary')
+            "
+          />
+          @if (contactForm.controls.email.invalid && contactForm.controls.email.touched) {
+            <p class="mt-1 text-sm text-danger">
+              @if (
+                contactForm.controls.email.hasError('required') ||
+                contactForm.controls.email.hasError('whitespace')
+              ) {
+                Email address is required.
+              } @else if (contactForm.controls.email.hasError('email')) {
+                Please enter a valid email address.
+              }
+            </p>
+          }
+        </div>
+
+        <div class="mb-6">
+          <label for="message" class="block text-sm text-text-muted mb-2">Message</label>
+          <textarea
+            #messageInput
+            id="message"
+            rows="4"
+            formControlName="message"
+            [class]="
+              'w-full px-3 py-3 border rounded-lg text-sm bg-background outline-none resize-y transition-colors ' +
+              (contactForm.controls.message.invalid && contactForm.controls.message.touched
+                ? 'border-danger'
+                : 'border-border focus:border-primary')
+            "
+          ></textarea>
+          @if (contactForm.controls.message.invalid && contactForm.controls.message.touched) {
+            <p class="mt-1 text-sm text-danger">
+              @if (
+                contactForm.controls.message.hasError('required') ||
+                contactForm.controls.message.hasError('whitespace')
+              ) {
+                Please enter your message.
+              } @else if (contactForm.controls.message.hasError('minlength')) {
+                Message must be at least 10 characters long.
+              }
+            </p>
+          }
+        </div>
+
+        <button
+          type="submit"
+          class="w-full py-3.5 rounded-lg text-sm font-medium text-text-inverse bg-linear-to-br from-primary to-primary-dark transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_20px_var(--color-primary)/30]"
+        >
+          Send message
+        </button>
+      </form>
+    </div>
+
+    <div class="rounded-3xl relative min-h-165.5 w-full max-w-130 hidden md:flex overflow-hidden">
+      <img
+        ngSrc="https://www.thenomadstudio.com/wp-content/uploads/2021/10/Vertical-shoe-rack-12.jpg"
+        alt="Brand visual"
+        fill
+        class="object-cover"
+        priority
+      />
+    </div>
+  </div>
+</section>

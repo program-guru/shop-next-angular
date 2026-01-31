@@ -26,12 +26,12 @@ export const routes: Routes = [
       //     ),
       //   title: 'ShopNext - Product Details',
       // },
-      // {
-      //   path: 'contact',
-      //   loadComponent: () =>
-      //     import('./pages/contact/contact.component').then((m) => m.ContactComponent),
-      //   title: 'ShopNext - Contact Us',
-      // },
+      {
+        path: 'contact',
+        loadComponent: () =>
+          import('./pages/contact-us/contact-us.compoment').then((m) => m.ContactUs),
+        title: 'ShopNext - Contact Us',
+      },
       {
         path: 'about',
         loadComponent: () => import('./pages/about-us/about-us.compoment').then((m) => m.AboutUs),
