@@ -38,10 +38,10 @@
     @for (item of links; track item.href) {
       <a
         [routerLink]="[item.href]"
-        routerLinkActive="px-3 py-2 rounded-lg bg-primary text-text-inverse font-semibold"
+        routerLinkActive="bg-primary text-text-inverse font-semibold pointer-events-none"
         [routerLinkActiveOptions]="{ exact: true }"
         (click)="closeMenu()"
-        class="px-3 py-2 rounded-lg hover:bg-surface-hover transition-colors"
+        class="block px-4 py-2 rounded-lg transition-colors hover:bg-surface-hover"
       >
         {{ item.name }}
       </a>

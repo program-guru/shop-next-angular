@@ -1,0 +1,46 @@
+<section class="py-16 px-4">
+  <div class="max-w-6xl mx-auto text-center">
+    <h1 class="text-3xl font-heading font-semibold text-text">
+      Meet Our Team
+    </h1>
+    <p class="mt-2 text-text-muted">
+      The people behind ShopNext, passionate about design, quality, and
+      customer experience.
+    </p>
+
+    <div class="flex flex-wrap items-center justify-center gap-8 mt-12">
+      @for (member of teamMembers; track member.name) {
+        <div
+          class="max-w-80 w-full rounded-2xl
+                border border-border bg-surface
+                overflow-hidden transition-transform
+                hover:-translate-y-1"
+        >
+          <div class="relative overflow-hidden">
+            <img
+              [ngSrc]="member.image"
+              [alt]="member.name"
+              class="h-70 w-full object-cover object-top
+                    transition-transform duration-300
+                    hover:scale-105"
+              width="320"  
+              height="280" 
+              priority
+            />
+            <div
+              class="absolute inset-x-0 bottom-0 h-32
+              bg-linear-to-t from-black/70 to-transparent"
+            ></div>
+          </div>
+
+          <div class="px-4 py-6 text-center">
+            <p class="text-lg font-medium text-text">{{ member.name }}</p>
+            <p class="text-sm font-medium text-primary">
+              {{ member.role }}
+            </p>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

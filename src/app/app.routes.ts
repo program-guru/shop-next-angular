@@ -32,11 +32,11 @@ export const routes: Routes = [
       //     import('./pages/contact/contact.component').then((m) => m.ContactComponent),
       //   title: 'ShopNext - Contact Us',
       // },
-      // {
-      //   path: 'about',
-      //   loadComponent: () => import('./pages/about/about.component').then((m) => m.AboutComponent),
-      //   title: 'ShopNext - About Us',
-      // },
+      {
+        path: 'about',
+        loadComponent: () => import('./pages/about-us/about-us.compoment').then((m) => m.AboutUs),
+        title: 'ShopNext - About Us',
+      },
     ],
   },
   // Catch-all 404 redirect
