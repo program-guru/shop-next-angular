@@ -1,0 +1,148 @@
+<div class="min-h-[calc(100vh-4rem)]">
+  @if (!product()) {
+    <div class="max-w-6xl mx-auto px-4 py-20 text-center">
+      <p class="text-text-muted">Loading product details...</p>
+    </div>
+  } @else {
+    @let p = product()!;
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
+      <nav
+        class="hidden sm:flex text-sm text-text-muted mb-4 flex-wrap gap-2 items-center"
+        aria-label="Breadcrumb"
+      >
+        <a routerLink="/" class="hover:text-text transition-colors">Home</a>
+        <span>/</span>
+        <a routerLink="/products" class="hover:text-text transition-colors">Products</a>
+        <span>/</span>
+        <span class="text-primary font-medium truncate max-w-60" aria-current="page">
+          {{ p.name }}
+        </span>
+      </nav>
+
+      <button
+        (click)="goBack()"
+        class="mb-4 flex items-center gap-2 text-sm text-text-muted hover:text-text transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded-md"
+        aria-label="Go back"
+      >
+        <mat-icon class="w-4 h-4 text-[16px]!">arrow_back</mat-icon>
+        Back
+      </button>
+
+      <div class="flex flex-col lg:flex-row gap-6 lg:gap-12">
+        <div class="w-full lg:flex-1">
+          <div class="flex flex-col sm:flex-row gap-3 items-start">
+            <div class="w-full sm:flex-1 order-1 sm:order-2">
+              <div
+                class="aspect-square bg-surface border border-border rounded-lg sm:rounded-xl overflow-hidden relative"
+              >
+                <img [ngSrc]="activeImage()" [alt]="p.name" fill priority class="object-contain" />
+              </div>
+            </div>
+
+            <div
+              class="flex sm:flex-col gap-2 shrink-0 order-2 sm:order-1 overflow-x-auto sm:overflow-visible w-full sm:w-auto pb-2 sm:pb-0"
+            >
+              @for (img of p.images; track $index) {
+                <button
+                  (click)="setActiveImage(img)"
+                  class="relative aspect-square w-16 sm:w-14 md:w-16 border rounded overflow-hidden shrink-0 transition-all focus:outline-none focus:ring-2 focus:ring-primary"
+                  [class.border-primary]="img === activeImage()"
+                  [class.border-border]="img !== activeImage()"
+                  [class.hover:border-primary-50]="img !== activeImage()"
+                  [attr.aria-label]="'View image ' + ($index + 1)"
+                  [attr.aria-current]="img === activeImage()"
+                >
+                  <img [ngSrc]="img" alt="" fill class="object-cover" />
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full lg:flex-1 text-left flex flex-col justify-start">
+          <h1 class="text-2xl sm:text-3xl font-heading font-semibold text-text">
+            {{ p.name }}
+          </h1>
+
+          <div class="flex items-center gap-1 mt-2" aria-label="Rating">
+            @for (star of [1, 2, 3, 4, 5]; track star) {
+              <mat-icon
+                class="w-5 h-5 text-[20px]!"
+                [class.text-warning]="star <= p.rating"
+                [class.text-border]="star > p.rating"
+                aria-hidden="true"
+                >star</mat-icon
+              >
+            }
+            <span class="ml-2 text-sm text-text-muted">({{ p.rating }})</span>
+          </div>
+
+          <div class="mt-4">
+            <p class="text-text-muted text-sm">MRP:</p>
+            <p class="text-xl sm:text-2xl font-semibold text-text">
+              {{ p.price | currency: 'INR' : 'symbol' : '1.0-0' }}
+            </p>
+            <p class="text-xs text-success">Inclusive of all taxes</p>
+          </div>
+
+          @if (sizes().length > 0) {
+            <div class="mt-6">
+              <p class="text-sm font-medium mb-2 text-text">Select Size</p>
+              <div class="flex gap-2 flex-wrap">
+                @for (size of sizes(); track size) {
+                  @let isOutOfStock = p.stock[size] === 0;
+
+                  <button
+                    (click)="!isOutOfStock && selectSize(size)"
+                    [disabled]="isOutOfStock"
+                    class="w-12 h-12 sm:w-10 sm:h-10 rounded border text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary"
+                    [class.opacity-40]="isOutOfStock"
+                    [class.cursor-not-allowed]="isOutOfStock"
+                    [class.bg-primary]="selectedSize() === size"
+                    [class.text-text-inverse]="selectedSize() === size"
+                    [class.border-primary]="selectedSize() === size"
+                    [class.bg-transparent]="selectedSize() !== size"
+                    [class.border-border]="selectedSize() !== size"
+                    [class.hover:border-primary]="!isOutOfStock && selectedSize() !== size"
+                  >
+                    {{ size }}
+                  </button>
+                }
+              </div>
+
+              @if (sizeError()) {
+                <p class="text-sm text-danger mt-2 animate-pulse flex items-center gap-1">
+                  <mat-icon class="w-4 h-4 text-[16px]!">error</mat-icon>
+                  Please select a size before adding to cart
+                </p>
+              }
+            </div>
+          }
+
+          <div class="mt-6 text-sm text-text-muted leading-relaxed">
+            <p>{{ p.description }}</p>
+          </div>
+
+          <div class="mt-8 lg:mt-auto">
+            <div class="flex gap-3 sm:gap-4">
+              <button
+                (click)="handleAddToCart()"
+                class="flex-1 py-3 sm:py-3 rounded-lg border bg-surface border-border hover:bg-surface-hover text-text text-sm sm:text-base font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                Add to cart
+              </button>
+
+              <button
+                (click)="handleBuyNow()"
+                class="flex-1 py-3 sm:py-3 rounded-lg bg-primary text-text-inverse hover:bg-primary-dark text-sm sm:text-base font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              >
+                Buy now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

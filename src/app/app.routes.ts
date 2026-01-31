@@ -17,15 +17,14 @@ export const routes: Routes = [
           import('./pages/products/products.component').then((m) => m.Products),
         title: 'ShopNext - Browse Products',
       },
-      // {
-      //   // Route with Parameter (id)
-      //   path: 'products/:id',
-      //   loadComponent: () =>
-      //     import('./pages/product-detail/product-detail.component').then(
-      //       (m) => m.ProductDetailComponent,
-      //     ),
-      //   title: 'ShopNext - Product Details',
-      // },
+      {
+        path: 'products/:id',
+        loadComponent: () =>
+          import('./pages/product-details/product-details.component').then(
+            (m) => m.ProductDetails,
+          ),
+        title: 'ShopNext - Product Details',
+      },
       {
         path: 'contact',
         loadComponent: () =>
