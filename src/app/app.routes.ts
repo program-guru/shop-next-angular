@@ -41,11 +41,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/cart/cart.component').then((m) => m.Cart),
         title: 'ShopNext - Your Cart',
       },
+      {
+        path: '**',
+        loadComponent: () => import('./pages/not-found/not-found.component').then((m) => m.NotFound),
+      },
     ],
-  },
-  // Catch-all 404 redirect
-  {
-    path: '**',
-    redirectTo: '',
   },
 ];
