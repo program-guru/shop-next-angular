@@ -1,37 +1,34 @@
 @if (currentProduct(); as product) {
   <div
-    class="relative w-full h-100 md:h-125 overflow-hidden rounded-2xl group"
+    class="relative w-full h-100 md:h-125 overflow-hidden rounded-2xl group transition-colors duration-700 ease-in-out"
     (mouseenter)="stopAutoSlide()"
     (mouseleave)="startAutoSlide()"
+    [style.background-color]="'#899194'"
   >
-    <div
-      class="w-full h-full bg-center transition-all duration-700 ease-in-out"
-      [style.background-image]="'url(' + product.mainImage + ')'"
-      [style.background-color]="'#899194'"
-      [style.background-size]="'cover'"
-      [style.background-repeat]="'no-repeat'"
-      [style.background-position]="'center'"
-    >
-      <div class="absolute inset-0 bg-black/40"></div>
-    </div>
+    <img 
+      [src]="product.mainImage" 
+      [alt]="product.name"
+      fill
+      class="object-contain object-center w-full! h-full! mx-auto transition-transform duration-700 ease-in-out hover:scale-105 z-0"
+    />
 
-    <div
-      class="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4"
-    >
-      <span class="bg-primary text-xs font-bold px-3 py-1 rounded-full mb-4 animate-fade-in">
+    <div class="absolute inset-0 bg-radial-gradient from-black/40 via-transparent to-transparent pointer-events-none z-10"></div>
+
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4 z-20">
+      <span class="bg-primary text-xs font-bold px-3 py-1 rounded-full mb-4 animate-fade-in shadow-xl ring-1 ring-white/20">
         FEATURED
       </span>
 
-      <h2 class="text-4xl md:text-6xl font-heading font-bold mb-4 drop-shadow-lg">
+      <h2 class="text-4xl md:text-6xl font-heading font-bold mb-4 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">
         {{ product.name }}
       </h2>
 
-      <p class="text-lg md:text-xl max-w-2xl text-gray-200 mb-8 line-clamp-2">
+      <p class="text-lg md:text-xl max-w-2xl text-gray-100 mb-8 line-clamp-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] font-medium">
         {{ product.description }}
       </p>
 
       <button
-        class="bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-full font-semibold transition-transform hover:scale-105 active:scale-95"
+        class="bg-white text-primary hover:bg-gray-100 px-8 py-3 rounded-full font-semibold transition-transform hover:scale-105 active:scale-95 shadow-2xl border border-gray-200"
         (click)="navigateToProduct(product.id)"
       >
         Shop Now - {{ product.price | currency: 'INR' }}
@@ -40,27 +37,27 @@
 
     <button
       (click)="prevSlide()"
-      class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 backdrop-blur-sm p-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity"
+      class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/50 backdrop-blur-md p-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity z-30 border border-white/10"
       aria-label="Previous Slide"
     >
-      <mat-icon class="w-8 h-8 text-[32px]">chevron_left</mat-icon>
+      <mat-icon class="w-8! h-8! text-[32px]!">chevron_left</mat-icon>
     </button>
 
     <button
       (click)="nextSlide()"
-      class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 backdrop-blur-sm p-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity"
+      class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/20 hover:bg-black/50 backdrop-blur-md p-2 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity z-30 border border-white/10"
       aria-label="Next Slide"
     >
-      <mat-icon class="w-8 h-8 text-[32px]">chevron_right</mat-icon>
+      <mat-icon class="w-8! h-8! text-[32px]!">chevron_right</mat-icon>
     </button>
 
-    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-2">
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-2 z-30">
       @for (prod of featuredProducts(); track prod.id; let i = $index) {
         <button
           (click)="goToSlide(i)"
           [class]="
-            'h-3 rounded-full transition-all duration-300 ' +
-            (i === currentIndex() ? 'bg-white w-8' : 'bg-white/50 w-3 hover:bg-white/80')
+            'h-2.5 rounded-full transition-all duration-300 shadow-md ' +
+            (i === currentIndex() ? 'bg-white w-8' : 'bg-white/50 w-2.5 hover:bg-white/80')
           "
           [attr.aria-label]="'Go to slide ' + (i + 1)"
         ></button>
