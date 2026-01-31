@@ -11,12 +11,12 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/home/home.component').then((m) => m.Home),
         title: 'ShopNext - Home',
       },
-      // {
-      //   path: 'products',
-      //   loadComponent: () =>
-      //     import('./pages/products/products.component').then((m) => m.ProductsComponent),
-      //   title: 'ShopNext - Browse Products',
-      // },
+      {
+        path: 'products',
+        loadComponent: () =>
+          import('./pages/products/products.component').then((m) => m.Products),
+        title: 'ShopNext - Browse Products',
+      },
       // {
       //   // Route with Parameter (id)
       //   path: 'products/:id',

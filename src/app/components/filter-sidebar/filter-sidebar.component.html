@@ -68,7 +68,7 @@
         @for (brand of sortedBrands(); track brand) {
           <button
             (click)="filterService.toggleBrand(brand)"
-            class="px-2.5 py-1 text-[11px] font-medium rounded-full border transition-all duration-200"
+            class="px-2.5 py-1 text-[11px] font-medium rounded-full border transition-all duration-200 cursor-pointer"
             [class.bg-primary]="filterService.brands().includes(brand)"
             [class.border-primary]="filterService.brands().includes(brand)"
             [class.text-text-inverse]="filterService.brands().includes(brand)"
@@ -76,7 +76,7 @@
             [class.bg-surface]="!filterService.brands().includes(brand)"
             [class.border-border]="!filterService.brands().includes(brand)"
             [class.text-text]="!filterService.brands().includes(brand)"
-            [class.hover.border-primary]="!filterService.brands().includes(brand)"
+            [class.hover:border-primary]="!filterService.brands().includes(brand)"
           >
             {{ brand }}
           </button>
@@ -90,7 +90,7 @@
         @for (cat of sortedCategories(); track cat) {
           <button
             (click)="filterService.toggleCategory(cat)"
-            class="px-2.5 py-1 text-[11px] font-medium rounded-full border transition-all duration-200"
+            class="px-2.5 py-1 text-[11px] font-medium rounded-full border transition-all duration-200 cursor-pointer"
             [class.bg-primary]="filterService.categories().includes(cat)"
             [class.border-primary]="filterService.categories().includes(cat)"
             [class.text-text-inverse]="filterService.categories().includes(cat)"
@@ -172,7 +172,7 @@
             (click)="filterService.setMinRating(star)"
             (mouseenter)="hoverRating.set(star)"
             (mouseleave)="hoverRating.set(null)"
-            class="p-0.5 focus:outline-none transition-transform hover:scale-110"
+            class="p-0.5 focus:outline-none transition-transform hover:scale-110 cursor-pointer"
           >
             <mat-icon
               class="w-6 h-6 transition-colors duration-200"
@@ -194,14 +194,14 @@
         @for (size of productService.sizes(); track size) {
           <button
             (click)="filterService.toggleSize(size)"
-            class="h-8 w-full rounded text-xs font-medium border transition-colors"
+            class="h-8 w-full rounded text-xs font-medium border transition-colors cursor-pointer"
             [class.bg-primary]="filterService.sizes().includes(size)"
             [class.border-primary]="filterService.sizes().includes(size)"
             [class.text-text-inverse]="filterService.sizes().includes(size)"
             [class.bg-transparent]="!filterService.sizes().includes(size)"
             [class.border-border]="!filterService.sizes().includes(size)"
             [class.text-text]="!filterService.sizes().includes(size)"
-            [class.hover.border-primary]="!filterService.sizes().includes(size)"
+            [class.hover:border-primary]="!filterService.sizes().includes(size)"
           >
             {{ size }}
           </button>
