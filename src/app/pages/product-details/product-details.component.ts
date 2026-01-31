@@ -14,7 +14,7 @@ import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
 
 @Component({
-  selector: 'app-product-details',
+  selector: 'component-product-details',
   templateUrl: './product-details.component.html',
   imports: [CommonModule, RouterLink, MatIconModule, NgOptimizedImage],
   changeDetection: ChangeDetectionStrategy.OnPush,
