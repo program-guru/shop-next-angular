@@ -1,0 +1,234 @@
+<button
+  (click)="toggleSidebar()"
+  class="md:hidden fixed left-0 top-24 z-40 bg-primary text-text-inverse py-3 pl-2 pr-4 rounded-r-lg shadow-md border-y border-r border-white/20 hover:bg-primary-dark active:scale-95 transition-all duration-300 ease-in-out"
+  [class.-translate-x-full]="isOpen()"
+  [class.opacity-0]="isOpen()"
+  [class.translate-x-0]="!isOpen()"
+  [class.opacity-100]="!isOpen()"
+  aria-label="Open filters"
+>
+  <mat-icon class="w-5 h-5">chevron_right</mat-icon>
+</button>
+
+@if (isOpen()) {
+  <div
+    class="md:hidden fixed inset-0 bg-black/60 z-50 backdrop-blur-sm transition-opacity"
+    (click)="isOpen.set(false)"
+  ></div>
+}
+
+<aside
+  class="fixed md:sticky top-0 md:top-24 h-dvh md:h-[calc(100vh-8rem)] w-[85vw] max-w-sm md:w-72 bg-surface border-r md:border border-border md:rounded-2xl shadow-2xl md:shadow-sm z-50 md:z-30 overflow-hidden transition-transform duration-300 ease-[cubic-bezier(0.33,1,0.68,1)] flex flex-col left-0"
+  [class.translate-x-0]="isOpen()"
+  [class.-translate-x-full]="!isOpen()"
+  [class.md:translate-x-0]="true"
+>
+  <div
+    class="flex items-center justify-between px-4 py-3 border-b border-border bg-surface shrink-0"
+  >
+    <h2 class="font-heading font-semibold text-base text-text">Filters</h2>
+    <div class="flex items-center gap-4">
+      <button
+        class="text-xs font-medium text-primary hover:text-primary-dark underline"
+        (click)="handleReset()"
+      >
+        Reset
+      </button>
+      <button
+        (click)="isOpen.set(false)"
+        class="md:hidden p-1 rounded-full hover:bg-surface-hover text-text-muted transition-colors"
+      >
+        <mat-icon class="w-5 h-5">close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div
+    class="p-4 space-y-5 overflow-y-auto flex-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:none]"
+  >
+    <div class="space-y-2">
+      <div class="relative">
+        <input
+          type="text"
+          [formControl]="searchControl"
+          placeholder="Search..."
+          class="w-full pl-8 pr-3 py-1.5 bg-background border border-border rounded-md text-sm focus:outline-none focus:border-primary transition-colors"
+        />
+        <mat-icon class="w-3.5 h-3.5 text-[14px]! text-text-muted absolute left-2.5 top-2.5"
+          >search</mat-icon
+        >
+      </div>
+    </div>
+
+    <hr class="border-border/50" />
+
+    <div class="space-y-2">
+      <label class="text-xs font-semibold text-text uppercase tracking-wider">Brands</label>
+      <div class="flex flex-wrap gap-1.5">
+        @for (brand of sortedBrands(); track brand) {
+          <button
+            (click)="filterService.toggleBrand(brand)"
+            class="px-2.5 py-1 text-[11px] font-medium rounded-full border transition-all duration-200"
+            [class.bg-primary]="filterService.brands().includes(brand)"
+            [class.border-primary]="filterService.brands().includes(brand)"
+            [class.text-text-inverse]="filterService.brands().includes(brand)"
+            [class.shadow-sm]="filterService.brands().includes(brand)"
+            [class.bg-surface]="!filterService.brands().includes(brand)"
+            [class.border-border]="!filterService.brands().includes(brand)"
+            [class.text-text]="!filterService.brands().includes(brand)"
+            [class.hover.border-primary]="!filterService.brands().includes(brand)"
+          >
+            {{ brand }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="space-y-2">
+      <label class="text-xs font-semibold text-text uppercase tracking-wider">Category</label>
+      <div class="flex flex-wrap gap-1.5">
+        @for (cat of sortedCategories(); track cat) {
+          <button
+            (click)="filterService.toggleCategory(cat)"
+            class="px-2.5 py-1 text-[11px] font-medium rounded-full border transition-all duration-200"
+            [class.bg-primary]="filterService.categories().includes(cat)"
+            [class.border-primary]="filterService.categories().includes(cat)"
+            [class.text-text-inverse]="filterService.categories().includes(cat)"
+            [class.bg-surface]="!filterService.categories().includes(cat)"
+            [class.border-border]="!filterService.categories().includes(cat)"
+            [class.text-text]="!filterService.categories().includes(cat)"
+            [class.hover:border-primary]="!filterService.categories().includes(cat)"
+          >
+            {{ cat }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <hr class="border-border/50" />
+
+    <div class="space-y-3">
+      <label class="text-xs font-semibold text-text uppercase tracking-wider">Price Range</label>
+
+      <div class="flex justify-between items-center text-xs font-medium text-text-muted">
+        <span>{{ priceMinControl.value | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
+        <span>{{ priceMaxControl.value | currency: 'INR' : 'symbol' : '1.0-0' }}</span>
+      </div>
+
+      <div class="relative w-full h-6 flex items-center select-none touch-none">
+        <input
+          type="range"
+          [min]="MIN_PRICE"
+          [max]="MAX_PRICE"
+          step="500"
+          [formControl]="priceMinControl"
+          (input)="handleMinPriceChange($event)"
+          class="absolute z-20 w-full h-2 opacity-0 cursor-pointer pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4"
+        />
+        <input
+          type="range"
+          [min]="MIN_PRICE"
+          [max]="MAX_PRICE"
+          step="500"
+          [formControl]="priceMaxControl"
+          (input)="handleMaxPriceChange($event)"
+          class="absolute z-20 w-full h-2 opacity-0 cursor-pointer pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4"
+        />
+
+        <div class="relative w-full h-1 bg-border rounded-lg z-10">
+          <div
+            class="absolute h-full bg-primary rounded-lg"
+            [style.left.%]="((priceMinControl.value || 0) / MAX_PRICE) * 100"
+            [style.right.%]="100 - ((priceMaxControl.value || MAX_PRICE) / MAX_PRICE) * 100"
+          ></div>
+        </div>
+
+        <div
+          class="absolute w-3.5 h-3.5 bg-white border-[1.5px] border-primary rounded-full shadow z-10 pointer-events-none"
+          [style.left]="'calc(' + ((priceMinControl.value || 0) / MAX_PRICE) * 100 + '% - 7px)'"
+        ></div>
+        <div
+          class="absolute w-3.5 h-3.5 bg-white border-[1.5px] border-primary rounded-full shadow z-10 pointer-events-none"
+          [style.left]="
+            'calc(' + ((priceMaxControl.value || MAX_PRICE) / MAX_PRICE) * 100 + '% - 7px)'
+          "
+        ></div>
+      </div>
+    </div>
+
+    <hr class="border-border/50" />
+
+    <div class="space-y-2">
+      <div class="flex justify-between items-baseline">
+        <label class="text-xs font-semibold text-text uppercase tracking-wider">Rating</label>
+        @if (filterService.minRating()) {
+          <span class="text-[10px] text-text-muted">{{ filterService.minRating() }}+ Stars</span>
+        }
+      </div>
+
+      <div class="flex items-center gap-1">
+        @for (star of [1, 2, 3, 4, 5]; track star) {
+          <button
+            (click)="filterService.setMinRating(star)"
+            (mouseenter)="hoverRating.set(star)"
+            (mouseleave)="hoverRating.set(null)"
+            class="p-0.5 focus:outline-none transition-transform hover:scale-110"
+          >
+            <mat-icon
+              class="w-6 h-6 transition-colors duration-200"
+              [class.text-yellow-400]="(hoverRating() || filterService.minRating() || 0) >= star"
+              [class.text-border]="(hoverRating() || filterService.minRating() || 0) < star"
+            >
+              star
+            </mat-icon>
+          </button>
+        }
+      </div>
+    </div>
+
+    <hr class="border-border/50" />
+
+    <div class="space-y-2">
+      <label class="text-xs font-semibold text-text uppercase tracking-wider">Sizes</label>
+      <div class="grid grid-cols-4 gap-1.5">
+        @for (size of productService.sizes(); track size) {
+          <button
+            (click)="filterService.toggleSize(size)"
+            class="h-8 w-full rounded text-xs font-medium border transition-colors"
+            [class.bg-primary]="filterService.sizes().includes(size)"
+            [class.border-primary]="filterService.sizes().includes(size)"
+            [class.text-text-inverse]="filterService.sizes().includes(size)"
+            [class.bg-transparent]="!filterService.sizes().includes(size)"
+            [class.border-border]="!filterService.sizes().includes(size)"
+            [class.text-text]="!filterService.sizes().includes(size)"
+            [class.hover.border-primary]="!filterService.sizes().includes(size)"
+          >
+            {{ size }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <hr class="border-border/50" />
+
+    <div class="space-y-2 pb-20 md:pb-0">
+      <label class="text-xs font-semibold text-text uppercase tracking-wider">Sort By</label>
+      <div class="relative">
+        <select
+          [value]="filterService.sortBy() || ''"
+          (change)="handleSortChange($event)"
+          class="w-full appearance-none py-1.5 pl-3 pr-8 bg-background border border-border rounded-md text-xs text-text focus:outline-none focus:border-primary cursor-pointer"
+        >
+          <option value="">Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="rating-desc">Top Rated</option>
+        </select>
+        <mat-icon
+          class="w-3.5 h-3.5 text-[14px]! absolute right-2.5 top-2.5 text-text-muted pointer-events-none"
+          >expand_more</mat-icon
+        >
+      </div>
+    </div>
+  </div>
+</aside>

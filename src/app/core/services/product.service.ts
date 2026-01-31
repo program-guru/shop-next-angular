@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Product } from '../models/product.model';
 
@@ -19,8 +19,23 @@ export class ProductService {
       },
       error: (err) => {
         console.error('Error loading products:', err);
-        this._products.set([]); 
+        this._products.set([]);
       },
     });
   }
+
+  readonly brands = computed(() => {
+    const brands = new Set(this.products().map((p) => p.brand));
+    return Array.from(brands).sort();
+  });
+
+  readonly categories = computed(() => {
+    const categories = new Set(this.products().flatMap((p) => p.category));
+    return Array.from(categories).sort();
+  });
+
+  readonly sizes = computed(() => {
+    const sizes = new Set(this.products().flatMap((p) => Object.keys(p.stock)));
+    return Array.from(sizes).sort();
+  });
 }
