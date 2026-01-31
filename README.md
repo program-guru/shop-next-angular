@@ -1,59 +1,106 @@
-# ShopNextAngular
+# ShopNext — Modern Angular E-Commerce
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.2.
+A modern, high-performance e-commerce application built with Angular 18+, leveraging the latest framework features for speed, maintainability, and developer experience.
 
-## Development server
+---
 
-To start a local development server, run:
+## 📁 Folder Structure
 
-```bash
-ng serve
+```
+src/
+├── app/
+│   ├── components/          # Reusable UI widgets (navbar, product-card, filter-sidebar, etc.)
+│   ├── core/
+│   │   ├── models/          # TypeScript interfaces (Product, CartItem, etc.)
+│   │   └── services/        # Singleton services (cart, filter, product, theme)
+│   ├── pages/               # Route views (home, products, product-details, cart, contact-us, etc.)
+│   └── app.routes.ts        # Application routing configuration
+├── public/
+│   ├── data/                # Mock database (products.json)
+│   ├── Products/            # Product images
+│   └── Team/                # Team member images
+└── styles.css               # Global styles & Tailwind directives
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 🧩 Component Hierarchy
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```
+AppComponent (Layout)
+│
+├── NavbarComponent
+│   ├── Logo
+│   ├── NavigationLinks
+│   ├── ThemeToggleComponent
+│   └── CartIcon (with badge)
+│
+├── RouterOutlet
+│   ├── HomePage
+│   │   ├── CarouselComponent
+│   │   ├── FeaturesComponent
+│   │   └── ProductFAQComponent
+│   ├── ProductsPage
+│   │   ├── FilterSidebarComponent
+│   │   └── ProductCardComponent (repeated)
+│   ├── ProductDetailsPage
+│   │   └── Gallery, Info, RelatedItems
+│   ├── CartPage
+│   │   └── CartItemsList, Quantity, Totals
+│   ├── ContactUsPage
+│   │   └── ContactFormComponent
+│   └── NotFoundPage
+│
+└── FooterComponent
+    ├── SocialLinks
+    └── InformationComponent
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## ⚡ Angular Features Used
 
-## Building
+- **Signals**: For state management (cart, filters, theme, etc.), using writable and computed signals.
+- **Standalone Components**: All components, directives, and pipes are standalone (no NgModules).
+- **Control Flow Syntax**: Uses `@if`, `@else`, and `@for` for template logic instead of legacy `*ngIf`/`*ngFor`.
+- **Component Input Binding**: Route parameters are injected directly as component inputs.
+- **Modern Dependency Injection**: Uses the `inject()` function for cleaner DI.
+- **NgOptimizedImage**: For image optimization (lazy loading, prioritization).
+- **OnPush Change Detection**: For improved performance.
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+## 🛠️ Running Locally
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Prerequisites
 
-## Running unit tests
+- Node.js v18+
+- npm v9+
+- Angular CLI v16+
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Steps
 
-```bash
-ng test
-```
+1. **Clone the repository**
+    ```bash
+    git clone https://github.com/program-guru/shop-next-angular.git
+    cd shopnext
+    ```
 
-## Running end-to-end tests
+2. **Install dependencies**
+    ```bash
+    npm install
+    ```
 
-For end-to-end (e2e) testing, run:
+3. **Run the development server**
+    ```bash
+    ng serve
+    ```
+    Open [http://localhost:4200](http://localhost:4200) in your browser.
 
-```bash
-ng e2e
-```
+4. **Build for production**
+    ```bash
+    ng build
+    ```
+    Output will be in `dist/shopnext`.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
