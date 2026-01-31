@@ -9,9 +9,11 @@ export class CartService {
   private _items = signal<CartItem[]>(this.loadFromStorage());
 
   readonly items = this._items.asReadonly();
-  readonly totalItems = computed(() => this._items().reduce((acc, item) => acc + item.quantity, 0));
+  readonly totalItems = computed(() =>
+    this._items().reduce((acc, item) => acc + Number(item.quantity), 0),
+  );
   readonly totalPrice = computed(() =>
-    this._items().reduce((acc, item) => acc + item.product.price * item.quantity, 0),
+    this._items().reduce((acc, item) => acc + item.product.price * Number(item.quantity), 0),
   );
 
   constructor() {
@@ -30,7 +32,7 @@ export class CartService {
         const newItems = [...currentItems];
         newItems[existingItemIndex] = {
           ...newItems[existingItemIndex],
-          quantity: newItems[existingItemIndex].quantity + 1,
+          quantity: Number(newItems[existingItemIndex].quantity) + 1,
         };
         return newItems;
       } else {
@@ -65,7 +67,18 @@ export class CartService {
   private loadFromStorage(): CartItem[] {
     if (typeof localStorage !== 'undefined') {
       const stored = localStorage.getItem('cart');
-      return stored ? JSON.parse(stored) : [];
+      if (stored) {
+        try {
+          const items = JSON.parse(stored);
+          return items.map((item: CartItem) => ({
+            ...item,
+            quantity: Number(item.quantity),
+          }));
+        } catch (e) {
+          console.error('Failed to parse cart', e);
+          return [];
+        }
+      }
     }
     return [];
   }
