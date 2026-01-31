@@ -4,12 +4,11 @@
   <!-- Logo -->
   <a [routerLink]="['/']" class="shrink-0">
     <img
-      [ngSrc]="this.themeService.theme() === 'dark' ? 'Logo/logo-dark.png' : 'Logo/logo-light.png'"
+      src="this.themeService.theme() === 'dark' ? 'Logo/logo-dark.png' : 'Logo/logo-light.png'"
       class="h-8 md:h-10 w-auto"
       alt="ShopNext Logo"
-      height="40"
+      height="24"
       width="100"
-      priority
     />
   </a>
 

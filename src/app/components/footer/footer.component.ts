@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NgOptimizedImage } from '@angular/common';
 import { ThemeService } from '../../core/services/theme.service'; 
 
 @Component({
   selector: 'component-footer',
   templateUrl: './footer.component.html', 
-  imports: [RouterLink, NgOptimizedImage],
+  imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Footer {

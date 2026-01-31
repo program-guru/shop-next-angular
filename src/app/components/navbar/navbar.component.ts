@@ -1,5 +1,5 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { ThemeService } from '../../core/services/theme.service';
@@ -13,7 +13,7 @@ interface NavLinkItem {
 @Component({
   selector: 'component-navbar',
   templateUrl: './navbar.component.html',
-  imports: [CommonModule, RouterLink, RouterLinkActive, MatIconModule, NgOptimizedImage, ThemeToggle],
+  imports: [CommonModule, RouterLink, RouterLinkActive, MatIconModule, ThemeToggle],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Navbar {

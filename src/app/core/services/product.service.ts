@@ -13,7 +13,7 @@ export class ProductService {
   readonly products = this._products.asReadonly();
 
   constructor() {
-    this.http.get<Product[]>('assets/data/products.json').subscribe({
+    this.http.get<Product[]>('data/products.json').subscribe({
       next: (data) => {
         this._products.set(data);
       },

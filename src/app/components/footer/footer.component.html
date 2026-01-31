@@ -29,14 +29,11 @@
     <div class="sm:col-span-2 lg:col-span-1">
       <a [routerLink]="['/']">
         <img
-          [ngSrc]="
+          [src]="
             this.themeService.theme() === 'dark' ? 'Logo/logo-dark.png' : 'Logo/logo-light.png'
           "
           class="h-8 md:h-10 w-auto"
           alt="ShopNext Logo"
-          height="40"
-          width="100"
-          priority
         />
       </a>
       <p class="text-sm/7 mt-6">

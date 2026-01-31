@@ -1,5 +1,4 @@
 import { Component, signal } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon'; 
 
 interface FAQ {
@@ -10,7 +9,7 @@ interface FAQ {
 @Component({
   selector: 'component-product-faq',
   templateUrl: './product-faq.component.html',
-  imports: [NgOptimizedImage, MatIconModule], 
+  imports: [MatIconModule], 
 })
 export class ProductFaq {
   protected openIndex = signal<number | null>(null);
