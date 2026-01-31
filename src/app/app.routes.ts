@@ -36,6 +36,11 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/about-us/about-us.compoment').then((m) => m.AboutUs),
         title: 'ShopNext - About Us',
       },
+      {
+        path: 'cart',
+        loadComponent: () => import('./pages/cart/cart.component').then((m) => m.Cart),
+        title: 'ShopNext - Your Cart',
+      },
     ],
   },
   // Catch-all 404 redirect

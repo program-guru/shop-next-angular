@@ -4,6 +4,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { ThemeService } from '../../core/services/theme.service';
 import { ThemeToggle } from '../theme-toggle/theme-toggle.component';
+import { CartService } from '../../core/services/cart.service';
 
 interface NavLinkItem {
   name: string;
@@ -18,6 +19,7 @@ interface NavLinkItem {
 })
 export class Navbar {
   themeService = inject(ThemeService);
+  cartService = inject(CartService);
 
   readonly isMenuOpen = signal<boolean>(false);
 

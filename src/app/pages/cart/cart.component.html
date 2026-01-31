@@ -1,0 +1,251 @@
+@if (cartService.totalItems() === 0) {
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20 text-center animate-in fade-in zoom-in-95 duration-500">
+    <div class="flex justify-center mb-6">
+      <div class="w-20 h-20 sm:w-24 sm:h-24 bg-surface border-2 border-border rounded-full flex items-center justify-center shadow-inner">
+        <mat-icon class="text-text-muted w-10 h-10 sm:w-12 sm:h-12 text-[40px]! sm:text-[48px]!">shopping_bag</mat-icon>
+      </div>
+    </div>
+    <h1 class="text-2xl sm:text-3xl font-heading font-semibold mb-3 sm:mb-4 text-text">
+      Your Cart is Empty
+    </h1>
+    <p class="text-text-muted mb-6 sm:mb-8 text-sm sm:text-base">
+      Looks like you haven't added anything to your cart yet.
+    </p>
+    <a
+      routerLink="/products"
+      class="inline-flex items-center gap-2 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl bg-primary text-text-inverse font-medium hover:bg-primary-dark transition-colors text-sm sm:text-base shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+    >
+      <mat-icon class="w-5 h-5 text-[20px]!">shopping_bag</mat-icon>
+      Start Shopping
+    </a>
+  </div>
+} @else {
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-12 lg:py-16">
+    
+    <a
+      routerLink="/products"
+      class="lg:hidden inline-flex items-center gap-2 text-primary font-medium hover:underline mb-4 text-sm"
+    >
+      <mat-icon class="w-4 h-4 text-[16px]!">arrow_back</mat-icon>
+      Continue Shopping
+    </a>
+
+    <div class="flex flex-col lg:flex-row gap-6 lg:gap-16 animate-in fade-in duration-500">
+      
+      <div class="flex-1">
+        <div class="flex items-center justify-between mb-4 sm:mb-6">
+          <h1 class="text-xl sm:text-2xl lg:text-3xl font-heading font-semibold text-text">
+            Shopping Cart
+          </h1>
+          <span class="text-xs sm:text-sm text-primary font-medium bg-primary-10 px-3 py-1 rounded-full border border-primary-20">
+            {{ cartService.totalItems() }} {{ cartService.totalItems() === 1 ? "Item" : "Items" }}
+          </span>
+        </div>
+
+        <div class="hidden md:grid grid-cols-[2fr_1fr_1fr] text-text-muted font-medium text-sm pb-3 border-b border-border">
+          <p>Product Details</p>
+          <p class="text-center">Total</p>
+          <p class="text-center">Action</p>
+        </div>
+
+        <div class="flex flex-col">
+          @for (item of cartService.items(); track item.product.id + item.size) {
+            <div class="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr] items-center gap-3 sm:gap-4 py-4 sm:py-6 border-b border-border last:border-0">
+              
+              <div class="flex gap-3 sm:gap-4 items-start sm:items-center">
+                <a
+                  [routerLink]="['/products', item.product.id]"
+                  class="w-20 h-20 sm:w-24 sm:h-24 shrink-0 rounded-lg border border-border bg-surface overflow-hidden hover:opacity-80 transition-opacity relative"
+                >
+                  <img
+                    [ngSrc]="item.product.mainImage"
+                    [alt]="item.product.name"
+                    fill
+                    class="object-cover"
+                  />
+                </a>
+
+                <div class="flex-1 min-w-0">
+                  <a
+                    [routerLink]="['/products', item.product.id]"
+                    class="font-medium text-sm sm:text-base text-text hover:text-primary transition-colors line-clamp-2 sm:line-clamp-1 block mb-1 sm:mb-2"
+                  >
+                    {{ item.product.name }}
+                  </a>
+
+                  <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs sm:text-sm text-text-muted">
+                    <div class="flex items-center gap-1.5">
+                      <mat-icon class="w-3.5 h-3.5 text-[14px]!">inventory_2</mat-icon>
+                      <span class="font-medium text-text">{{ item.size }}</span>
+                    </div>
+
+                    <div class="flex items-center gap-2 md:hidden">
+                      <span>Qty:</span>
+                      <div class="flex items-center border border-border rounded-lg overflow-hidden bg-surface">
+                        <button
+                          (click)="updateQuantity(item.product.id, item.size, item.quantity - 1)"
+                          class="p-1.5 hover:bg-surface-hover transition-colors disabled:opacity-30"
+                          [disabled]="item.quantity <= 1"
+                          aria-label="Decrease quantity"
+                        >
+                          <mat-icon class="w-3.5 h-3.5 text-[14px]!">remove</mat-icon>
+                        </button>
+                        <span class="px-3 py-1 text-sm font-medium min-w-10 text-center text-text">
+                          {{ item.quantity }}
+                        </span>
+                        <button
+                          (click)="updateQuantity(item.product.id, item.size, item.quantity + 1)"
+                          class="p-1.5 hover:bg-surface-hover transition-colors disabled:opacity-30"
+                          [disabled]="item.quantity >= 10"
+                          aria-label="Increase quantity"
+                        >
+                          <mat-icon class="w-3.5 h-3.5 text-[14px]!">add</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+
+                    <p class="md:hidden font-semibold text-text text-sm">
+                      {{ (item.product.price * item.quantity) | currency:'INR':'symbol':'1.0-0' }}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  (click)="removeItem(item.product.id, item.size)"
+                  class="md:hidden text-text-muted hover:text-danger hover:bg-red-50 p-1.5 rounded-full transition-colors shrink-0"
+                  aria-label="Remove item"
+                >
+                  <mat-icon class="w-4 h-4 text-[16px]!">delete_outline</mat-icon>
+                </button>
+              </div>
+
+              <div class="hidden md:flex justify-center items-center gap-4">
+                 <select
+                  [value]="item.quantity"
+                  (change)="updateQuantity(item.product.id, item.size, $any($event.target).value)"
+                  class="bg-surface border border-border rounded px-2 py-1 text-sm outline-none focus:border-primary cursor-pointer text-text"
+                  aria-label="Select quantity"
+                >
+                  @for (opt of quantityOptions; track opt) {
+                    <option [value]="opt">{{ opt }}</option>
+                  }
+                </select>
+                <p class="font-medium text-text">
+                  {{ (item.product.price * item.quantity) | currency:'INR':'symbol':'1.0-0' }}
+                </p>
+              </div>
+
+              <div class="hidden md:flex justify-center">
+                <button
+                  (click)="removeItem(item.product.id, item.size)"
+                  class="text-text-muted hover:text-danger hover:bg-red-50 p-2 rounded-full transition-colors"
+                  aria-label="Remove item"
+                >
+                  <mat-icon class="w-5 h-5">delete_outline</mat-icon>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+
+        <a
+          routerLink="/products"
+          class="hidden lg:inline-flex items-center gap-2 mt-6 text-primary font-medium hover:underline text-sm"
+        >
+          <mat-icon class="w-4 h-4 text-[16px]!">arrow_back</mat-icon>
+          Continue Shopping
+        </a>
+      </div>
+
+      <div class="w-full lg:w-96 shrink-0">
+        <div class="bg-surface border border-border rounded-xl p-4 sm:p-6 lg:sticky lg:top-24 shadow-sm">
+          <h2 class="text-lg sm:text-xl font-heading font-semibold mb-4 text-text">
+            Order Summary
+          </h2>
+
+          <hr class="border-border mb-4 sm:mb-5" />
+
+          <div class="mb-4 sm:mb-6">
+            <div class="flex items-center gap-2 mb-2">
+              <mat-icon class="w-4 h-4 text-[16px]! text-text-muted">location_on</mat-icon>
+              <p class="text-xs sm:text-sm font-medium uppercase text-text">
+                Delivery Address
+              </p>
+            </div>
+
+            <div class="relative flex justify-between items-center mt-2">
+              <p class="text-text-muted text-xs sm:text-sm truncate flex-1 pr-2">
+                No address found
+              </p>
+              <button
+                (click)="toggleAddress()"
+                class="text-primary text-xs sm:text-sm font-medium hover:underline whitespace-nowrap"
+                [attr.aria-expanded]="showAddress()"
+              >
+                Change
+              </button>
+
+              @if (showAddress()) {
+                <div class="absolute top-8 right-0 w-48 bg-surface border border-border rounded-lg text-sm shadow-xl z-10 animate-in fade-in zoom-in-95 duration-200 overflow-hidden">
+                  <button
+                    (click)="showAddress.set(false)"
+                    class="w-full text-left px-4 py-2 text-text hover:bg-surface-hover"
+                  >
+                    Mumbai, India
+                  </button>
+                  <button
+                    (click)="showAddress.set(false)"
+                    class="w-full text-left px-4 py-2 text-primary font-medium bg-primary-5 hover:bg-primary-10"
+                  >
+                    + Add address
+                  </button>
+                </div>
+              }
+            </div>
+
+            <div class="flex items-center gap-2 mb-2 mt-4 sm:mt-6">
+              <mat-icon class="w-4 h-4 text-[16px]! text-text-muted">credit_card</mat-icon>
+              <p class="text-xs sm:text-sm font-medium uppercase text-text">
+                Payment Method
+              </p>
+            </div>
+
+            <select class="w-full mt-2 px-3 py-2 bg-surface border border-border rounded-lg text-xs sm:text-sm outline-none focus:border-primary transition-colors text-text">
+              <option>Cash On Delivery</option>
+              <option>UPI / Net Banking</option>
+              <option>Credit Card</option>
+            </select>
+          </div>
+
+          <hr class="border-border" />
+
+          <div class="mt-4 space-y-2 text-xs sm:text-sm text-text-muted">
+            <p class="flex justify-between">
+              <span>Subtotal</span>
+              <span class="font-medium text-text">{{ cartService.totalPrice() | currency:'INR':'symbol':'1.0-0' }}</span>
+            </p>
+            <p class="flex justify-between">
+              <span>Shipping</span>
+              <span class="text-success font-medium">Free</span>
+            </p>
+            <p class="flex justify-between">
+              <span>Tax (2%)</span>
+              <span class="font-medium text-text">{{ tax() | currency:'INR':'symbol':'1.0-0' }}</span>
+            </p>
+
+            <div class="flex justify-between text-base sm:text-lg font-semibold text-text mt-4 pt-4 border-t border-border">
+              <span>Total</span>
+              <span>{{ grandTotal() | currency:'INR':'symbol':'1.0-0' }}</span>
+            </div>
+          </div>
+
+          <button
+            class="w-full mt-4 sm:mt-6 py-2.5 sm:py-3 rounded-lg font-medium text-sm sm:text-base text-text-inverse bg-linear-to-br from-primary to-primary-dark hover:-translate-y-0.5 hover:shadow-lg transition-all active:scale-[0.98]"
+          >
+            Place Order
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
