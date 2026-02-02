@@ -1,0 +1,11 @@
+runtime: nodejs24
+service: default
+
+handlers:
+  - url: /(.*\..+)$
+    static_files: dist/shop-next-angular/browser/\1
+    upload: dist/shop-next-angular/browser/(.*\..+)$
+
+  - url: /.*
+    static_files: dist/shop-next-angular/browser/index.html
+    upload: dist/shop-next-angular/browser/index.html
