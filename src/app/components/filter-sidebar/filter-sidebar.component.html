@@ -176,8 +176,11 @@
           >
             <mat-icon
               class="w-6 h-6 transition-colors duration-200"
-              [class.text-yellow-400]="(hoverRating() || filterService.minRating() || 0) >= star"
-              [class.text-border]="(hoverRating() || filterService.minRating() || 0) < star"
+              [ngClass]="{
+                'text-yellow-400': (hoverRating() || filterService.minRating() || 0) >= star,
+                'text-gray-300': (hoverRating() || filterService.minRating() || 0) < star,
+                'text-primary': (filterService.minRating() ?? 0) >= star && !hoverRating(),
+              }"
             >
               star
             </mat-icon>
