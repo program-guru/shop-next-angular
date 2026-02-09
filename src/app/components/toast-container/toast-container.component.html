@@ -1,0 +1,7 @@
+<div class="fixed bottom-5 right-5 z-100 flex flex-col gap-3 pointer-events-none">
+  @for (note of notificationService.notifications(); track note.id) {
+    <div class="pointer-events-auto">
+      <component-toast [notification]="note" />
+    </div>
+  }
+</div>
