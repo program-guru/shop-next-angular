@@ -1,14 +1,10 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  inject,
-  signal,
-  computed,
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { CartService } from '../../core/services/cart.service';
+import { NotificationService } from '../../core/services/notification.service';
+import type { NotificationType } from '../../core/models/notification.model';
 
 @Component({
   selector: 'app-cart',
@@ -18,14 +14,13 @@ import { CartService } from '../../core/services/cart.service';
 })
 export class Cart {
   cartService = inject(CartService);
+  private notificationService = inject(NotificationService);
 
   showAddress = signal(false);
 
-  shipping = signal(0); 
+  shipping = signal(0);
   tax = computed(() => Math.round(this.cartService.totalPrice() * 0.02));
-  grandTotal = computed(() => 
-    this.cartService.totalPrice() + this.shipping() + this.tax()
-  );
+  grandTotal = computed(() => this.cartService.totalPrice() + this.shipping() + this.tax());
 
   toggleAddress() {
     this.showAddress.update((v) => !v);
@@ -39,6 +34,12 @@ export class Cart {
   }
 
   removeItem(productId: number, size: string) {
+    this.notificationService.show('Item removed from cart');
     this.cartService.removeFromCart(productId, size);
+  }
+
+  handleBuyNow() {
+    this.notificationService.show('Order placed successfully!', 'success' as NotificationType);
+    this.cartService.clearCart();
   }
 }

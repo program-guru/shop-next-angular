@@ -12,6 +12,7 @@ import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
+import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
   selector: 'component-product-details',
@@ -22,6 +23,7 @@ import { CartService } from '../../core/services/cart.service';
 export class ProductDetails {
   private productService = inject(ProductService);
   private cartService = inject(CartService);
+  private notificationService = inject(NotificationService);
   private router = inject(Router);
   private location = inject(Location);
 
@@ -90,6 +92,7 @@ export class ProductDetails {
 
     // Reset selection
     this.selectedSize.set(null);
+    this.notificationService.show('Product added to cart');
     return true;
   }
 

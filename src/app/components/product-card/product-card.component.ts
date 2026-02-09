@@ -11,6 +11,7 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
 import { Product } from '../../core/models/product.model';
 import { CartService } from '../../core/services/cart.service';
+import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
   selector: 'component-product-card',
@@ -21,6 +22,7 @@ import { CartService } from '../../core/services/cart.service';
 export class ProductCard {
   private router = inject(Router);
   private cartService = inject(CartService);
+  private notificationService = inject(NotificationService);
 
   product = input.required<Product>();
 
@@ -47,6 +49,7 @@ export class ProductCard {
 
     if (size && product) {
       this.cartService.addToCart(product, size);
+      this.notificationService.show('Product added to cart');
     }
   }
 
