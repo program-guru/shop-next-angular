@@ -1,8 +1,10 @@
 <div class="min-h-[calc(100vh-4rem)]">
-  @if (!product()) {
+  @if (isLoading()) {
     <div class="max-w-6xl mx-auto px-4 py-20 text-center">
       <p class="text-text-muted">Loading product details...</p>
     </div>
+  } @else if (!product()) {
+    <component-not-found />
   } @else {
     @let p = product()!;
 

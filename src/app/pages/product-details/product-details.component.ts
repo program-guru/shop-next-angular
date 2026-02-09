@@ -13,11 +13,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
 import { NotificationService } from '../../core/services/notification.service';
+import { NotFound } from '../not-found/not-found.component';
 
 @Component({
   selector: 'component-product-details',
   templateUrl: './product-details.component.html',
-  imports: [CommonModule, RouterLink, MatIconModule, NgOptimizedImage],
+  imports: [CommonModule, RouterLink, MatIconModule, NgOptimizedImage, NotFound],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetails {
@@ -34,6 +35,8 @@ export class ProductDetails {
     return this.productService.products().find((p) => p.id === productId);
   });
 
+  isLoading = computed(() => this.productService.products().length === 0);
+
   activeImage = signal<string>('');
   selectedSize = signal<string | null>(null);
   sizeError = signal(false);
@@ -45,20 +48,18 @@ export class ProductDetails {
 
   constructor() {
     // Reset state whenever the product ID changes
-    effect(
-      () => {
-        const product = this.product();
+    effect(() => {
+      const product = this.product();
 
-        // Set default image to the new product's main image
-        if (product) {
-          this.activeImage.set(product.mainImage);
-        }
-
-        // Reset other selections
-        this.selectedSize.set(null);
-        this.sizeError.set(false);
+      // Set default image to the new product's main image
+      if (product) {
+        this.activeImage.set(product.mainImage);
       }
-    );
+
+      // Reset other selections
+      this.selectedSize.set(null);
+      this.sizeError.set(false);
+    });
   }
 
   goBack() {
