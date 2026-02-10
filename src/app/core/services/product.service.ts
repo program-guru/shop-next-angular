@@ -12,12 +12,22 @@ export class ProductService {
   private _products = signal<Product[]>([]);
   readonly products = this._products.asReadonly();
 
+  readonly isLoading = signal<boolean>(true);
+  readonly error = signal<string | null>(null);
+
   constructor() {
     this.http.get<Product[]>('data/products.json').subscribe({
-      next: (data) => this._products.set(data),
+      next: (data) => {
+        this._products.set(data);
+        this.isLoading.set(false);
+        this.error.set(null);
+      },
       error: (err) => {
         console.error('Error loading products:', err);
         this._products.set([]);
+        this.isLoading.set(false);
+        // Fallback to empty state on error so UI shows "No products found"
+        // this.error.set('Failed to load products');
       },
     });
   }
@@ -71,7 +81,7 @@ export class ProductService {
         const matchName = product.name.toLowerCase().includes(query);
         const matchDesc = product.description.toLowerCase().includes(query);
         const matchBrand = product.brand.toLowerCase().includes(query);
-        
+
         if (!matchName && !matchDesc && !matchBrand) return false;
       }
 
@@ -82,17 +92,12 @@ export class ProductService {
 
       // Categories
       if (filters.categories.length > 0) {
-        const hasCategory = product.category.some((cat) =>
-          filters.categories.includes(cat)
-        );
+        const hasCategory = product.category.some((cat) => filters.categories.includes(cat));
         if (!hasCategory) return false;
       }
 
       // Price Range
-      if (
-        product.price < filters.priceRange.min ||
-        product.price > filters.priceRange.max
-      ) {
+      if (product.price < filters.priceRange.min || product.price > filters.priceRange.max) {
         return false;
       }
 
@@ -101,10 +106,10 @@ export class ProductService {
         if (product.rating < filters.minRating) return false;
       }
 
-      // Sizes 
+      // Sizes
       if (filters.sizes.length > 0) {
         if (!product.stock) return false; // Safety check
-        
+
         const hasSize = filters.sizes.some((size) => {
           const stockCount = product.stock[size];
           return stockCount && stockCount > 0;

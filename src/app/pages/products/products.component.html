@@ -4,37 +4,47 @@
       class="w-full md:w-72 sticky top-24 self-start z-50"
     ></component-filter-sidebar>
     <main class="flex-1 w-full">
-      <!-- Results count -->
-      <div class="mb-6 flex items-center justify-end">
-        <p class="text-text-muted text-sm">
-          @if (productService.filteredProducts().length > 0) {
+      @if (productService.isLoading()) {
+        <div class="flex flex-col items-center justify-center py-20">
+          <!-- Simple Spinner -->
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
+          <p class="text-lg font-medium text-text-muted">Loading products...</p>
+        </div>
+      } @else if (productService.error()) {
+        <div class="text-center py-20 bg-red-50 rounded-2xl border border-red-200">
+          <mat-icon class="text-red-500 w-12 h-12 text-[48px]! mb-2">error</mat-icon>
+          <p class="text-lg font-medium text-red-700">Error loading products</p>
+          <p class="text-red-600 mt-1">{{ productService.error() }}</p>
+        </div>
+      } @else {
+        <!-- Results count -->
+        <div class="mb-6 flex items-center justify-end">
+          <p class="text-text-muted text-sm">
             {{ productService.filteredProducts().length }} results found
-          } @else {
-            Updating results...
-          }
-        </p>
-      </div>
-
-      <!-- Empty state -->
-      @if (productService.filteredProducts().length === 0) {
-        <div class="text-center py-20 bg-surface rounded-2xl border border-dashed border-border">
-          <mat-icon class="text-text-muted w-12 h-12 text-[48px]! mb-2"> search_off </mat-icon>
-          <p class="text-lg font-medium text-text">No products found</p>
-          <p class="text-text-muted mt-1">
-            Try adjusting your search or filters to find what you're looking for.
           </p>
         </div>
-      }
 
-      <!-- Products grid -->
-      @if (productService.filteredProducts().length > 0) {
-        <div
-          class="grid grid-cols-1 xl:grid-cols-2 gap-6 animate-in fade-in duration-500 justify-items-center"
-        >
-          @for (product of productService.filteredProducts(); track product.id) {
-            <component-product-card [product]="product" class="w-full max-w-lg" />
-          }
-        </div>
+        <!-- Empty state -->
+        @if (productService.filteredProducts().length === 0) {
+          <div class="text-center py-20 bg-surface rounded-2xl border border-dashed border-border">
+            <mat-icon class="text-text-muted w-12 h-12 text-[48px]! mb-2"> search_off </mat-icon>
+            <p class="text-lg font-medium text-text">No products found</p>
+            <p class="text-text-muted mt-1">
+              Try adjusting your search or filters to find what you're looking for.
+            </p>
+          </div>
+        }
+
+        <!-- Products grid -->
+        @if (productService.filteredProducts().length > 0) {
+          <div
+            class="grid grid-cols-1 xl:grid-cols-2 gap-6 animate-in fade-in duration-500 justify-items-center"
+          >
+            @for (product of productService.filteredProducts(); track product.id) {
+              <component-product-card [product]="product" class="w-full max-w-lg" />
+            }
+          </div>
+        }
       }
     </main>
   </div>
