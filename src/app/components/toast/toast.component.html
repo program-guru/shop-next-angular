@@ -2,40 +2,32 @@
 
 <div
   role="alert"
-  class="relative z-50 flex items-center gap-3 px-4 py-3 rounded-xl border shadow-lg transition-all duration-300 transform"
+  class="relative z-50 flex items-center gap-3 px-4 py-3 rounded-xl border shadow-lg transition-all duration-300 transform bg-surface"
   [class.translate-x-full]="isExiting()"
   [class.opacity-0]="isExiting()"
   [class.translate-x-0]="!isExiting()"
   [class.opacity-100]="!isExiting()"
-  [class.bg-green-100]="note.type === 'success'"
-  [class.border-green-300]="note.type === 'success'"
-  [class.text-green-900]="note.type === 'success'"
-  [class.bg-red-100]="note.type === 'error'"
-  [class.border-red-300]="note.type === 'error'"
-  [class.text-red-900]="note.type === 'error'"
-  [class.bg-orange-100]="note.type === 'warning'"
-  [class.border-orange-300]="note.type === 'warning'"
-  [class.text-orange-900]="note.type === 'warning'"
-  [class.bg-blue-100]="note.type === 'info'"
-  [class.border-blue-300]="note.type === 'info'"
-  [class.text-blue-900]="note.type === 'info'"
+  [class.border-success]="note.type === 'success'"
+  [class.border-danger]="note.type === 'error'"
+  [class.border-warning]="note.type === 'warning'"
+  [class.border-primary]="note.type === 'info'"
 >
   <!-- Icons -->
   @if (note.type === 'success') {
-    <mat-icon class="w-5 h-5 text-green-600 text-[20px]!">check_circle</mat-icon>
+    <mat-icon class="w-5 h-5 text-success text-[20px]!">check_circle</mat-icon>
   } @else if (note.type === 'error') {
-    <mat-icon class="w-5 h-5 text-red-600 text-[20px]!">error</mat-icon>
+    <mat-icon class="w-5 h-5 text-danger text-[20px]!">error</mat-icon>
   } @else if (note.type === 'warning') {
-    <mat-icon class="w-5 h-5 text-orange-600 text-[20px]!">warning</mat-icon>
+    <mat-icon class="w-5 h-5 text-warning text-[20px]!">warning</mat-icon>
   } @else {
-    <mat-icon class="w-5 h-5 text-blue-600 text-[20px]!">info</mat-icon>
+    <mat-icon class="w-5 h-5 text-primary text-[20px]!">info</mat-icon>
   }
 
   <p class="text-sm font-medium text-text">{{ note.message }}</p>
 
   <button
     (click)="handleDismiss()"
-    class="ml-2 p-1 rounded-full hover:bg-black/10 transition-colors"
+    class="ml-2 p-1 rounded-full hover:bg-surface-hover transition-colors"
     aria-label="Dismiss notification"
   >
     <mat-icon class="w-4 h-4 text-text-muted text-[16px]!">close</mat-icon>
