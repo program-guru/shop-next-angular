@@ -49,10 +49,12 @@
   <div class="flex items-center space-x-3 md:space-x-4 z-40">
     <a
       routerLink="/cart"
-      class="relative p-2 text-text-muted hover:text-primary transition-colors"
+      class="relative p-2 rounded-full transition-all duration-300 text-text"
       aria-label="View Cart"
     >
-      <mat-icon class="w-6 h-6">shopping_bag</mat-icon>
+      <mat-icon class="w-6 h-6 transition-transform duration-300 hover:-rotate-12"
+        >shopping_bag</mat-icon
+      >
 
       @if (cartService.totalItems() > 0) {
         <span
