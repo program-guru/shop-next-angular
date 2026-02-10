@@ -26,8 +26,7 @@ export class ProductService {
         console.error('Error loading products:', err);
         this._products.set([]);
         this.isLoading.set(false);
-        // Fallback to empty state on error so UI shows "No products found"
-        // this.error.set('Failed to load products');
+        this.error.set('Failed to load products');
       },
     });
   }
